@@ -4,6 +4,8 @@ import './App.css'
 import * as BooksAPI from "./BooksAPI"
 import GetAllBooks from "./GetAllBooks"
 import SetShelf from "./SetShelf"
+import {Link} from "react-router-dom"
+import {Route} from "react-router-dom"
 class BooksApp extends React.Component {
   
   state = {
@@ -71,7 +73,6 @@ addToRead=(book)=>{
   }))
 }
 }
-
  async componentDidMount(){
   const books= await BooksAPI.getAll()
   this.setState({books})
@@ -93,8 +94,7 @@ addToRead=(book)=>{
 
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          
+        <Route path="/newRead" render={()=>(
           <GetAllBooks 
           showSearchPage={() => this.setState({ showSearchPage: false })} 
           books={this.state.books}
@@ -105,8 +105,8 @@ addToRead=(book)=>{
           addToRead={this.addToRead}
           ReadList={this.state.read}
           remove={this.remove}
-          /> 
-        ) : (
+          /> )}/>
+       <Route exact path="/" render={()=>(
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -134,10 +134,12 @@ addToRead=(book)=>{
               </div>
             </div>
             <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+             <Link to="/newRead">Add a book</Link>
+              {/* <Link to="/newRead">Add a book</Link> */}
             </div>
           </div>
         )}
+        />
       </div>
     )
   }

@@ -24,6 +24,7 @@ import React,{Component} from "react";
     if (book.length>0){
       this.props.addToRead(book)
     }
+
   } 
   remove=(event)=>{
     const book=this.props.target.filter(c=>{
@@ -54,7 +55,7 @@ import React,{Component} from "react";
                     <option value="move" disabled>
                       Move to...
                     </option>
-                    <option value="currentlyReading" id={book.id} disabled={(this.props.currentlyReadingList.includes(book))?1:0}onClick={(event)=>this.addToCurrentlyReading(event)}>Currently Reading</option>
+                    <option value="currentlyReading" id={book.id} disabled={(this.props.currentlyReadingList.includes(book))?1:0} onClick={(event)=>this.addToCurrentlyReading(event)}>Currently Reading</option>
                     <option value="wantToRead" disabled={(this.props.wantToReadList.includes(book))?1:0} id={book.id}onClick={(event)=>this.addToWantToRead(event)}>Want to Read</option>
                     <option value="read" disabled={(this.props.ReadList.includes(book))?1:0} id={book.id} onClick={(event)=>this.addToRead(event)}>Read</option>
                     <option value="none"  id={book.id}onClick={(event)=>this.remove(event)}>None</option>

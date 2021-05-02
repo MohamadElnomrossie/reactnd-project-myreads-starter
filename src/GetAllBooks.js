@@ -30,12 +30,12 @@ class GetAllBooks extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <button
+          <Link
             className="close-search"
-            onClick={this.props.showSearchPage}
+            to="/"
           >
             Close
-          </button>
+          </Link>
           <div className="search-books-input-wrapper">
             {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
