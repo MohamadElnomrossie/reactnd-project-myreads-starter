@@ -1,18 +1,21 @@
 import React,{Component} from "react";
  class SetShelf extends Component {
-  addToCurrentlyReading=(event)=>{
+  addToWantToRead=(event)=>{
     const book=this.props.target.filter(c=>{
       return c.id===event.target.id
     })
-    this.props.addToCurrentlyReading(book)
+    if (book.length>0){
+
+      this.props.addToWantToRead(book)
+    }
   } 
   addToRead=(event)=>{
-    
   } 
   remove=(event)=>{
     console.log(event.target.id);
   }
    render(){
+  
    return(
     <ol className="books-grid">
       {this.props.target.map((book) => {
@@ -34,7 +37,7 @@ import React,{Component} from "react";
                       Move to...
                     </option>
                     <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead"  id={book.id}onClick={(event)=>this.addToCurrentlyReading(event)}>Want to Read</option>
+                    <option value="wantToRead" disabled={(this.props.wantToReadList.includes(book))?1:0} id={book.id}onClick={(event)=>this.addToWantToRead(event)}>Want to Read</option>
                     <option value="read"  id={book.id}onClick={(event)=>this.addToRead(event)}>Read</option>
                     <option value="none"  id={book.id}onClick={(event)=>this.remove(event)}>None</option>
                   </select>

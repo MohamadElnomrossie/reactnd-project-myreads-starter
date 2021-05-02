@@ -49,7 +49,8 @@ class GetAllBooks extends Component {
         </div>
         <div className="search-books-results">
         <SetShelf target={this.state.books}
-        addToCurrentlyReading={this.props.addToCurrentlyReading}/>
+        addToWantToRead={this.props.addToWantToRead}
+        wantToReadList={this.props.wantToReadList}/>
         </div>
     
       </div>
