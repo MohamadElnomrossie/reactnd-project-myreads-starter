@@ -9,13 +9,31 @@ import React,{Component} from "react";
       this.props.addToWantToRead(book)
     }
   } 
+  addToCurrentlyReading=(event)=>{
+    const book=this.props.target.filter(c=>{
+      return c.id===event.target.id
+    })
+    if (book.length>0){
+      this.props.addToCurrentlyReading(book)
+    }
+  } 
   addToRead=(event)=>{
+    const book=this.props.target.filter(c=>{
+      return c.id===event.target.id
+    })
+    if (book.length>0){
+      this.props.addToRead(book)
+    }
   } 
   remove=(event)=>{
-    console.log(event.target.id);
+    const book=this.props.target.filter(c=>{
+      return c.id===event.target.id
+    })
+    if (book.length>0){
+      this.props.remove(book)
+    }
   }
    render(){
-  
    return(
     <ol className="books-grid">
       {this.props.target.map((book) => {
@@ -36,9 +54,9 @@ import React,{Component} from "react";
                     <option value="move" disabled>
                       Move to...
                     </option>
-                    <option value="currentlyReading">Currently Reading</option>
+                    <option value="currentlyReading" id={book.id} disabled={(this.props.currentlyReadingList.includes(book))?1:0}onClick={(event)=>this.addToCurrentlyReading(event)}>Currently Reading</option>
                     <option value="wantToRead" disabled={(this.props.wantToReadList.includes(book))?1:0} id={book.id}onClick={(event)=>this.addToWantToRead(event)}>Want to Read</option>
-                    <option value="read"  id={book.id}onClick={(event)=>this.addToRead(event)}>Read</option>
+                    <option value="read" disabled={(this.props.ReadList.includes(book))?1:0} id={book.id} onClick={(event)=>this.addToRead(event)}>Read</option>
                     <option value="none"  id={book.id}onClick={(event)=>this.remove(event)}>None</option>
                   </select>
                 </div>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SetShelf from "./SetShelf"
 import {search} from "./BooksAPI"
+import {Link} from 'react-router-dom'
 class GetAllBooks extends Component {
     state={books:[],
     query:""}
@@ -25,6 +26,7 @@ class GetAllBooks extends Component {
     }
 
     render() { 
+      
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -50,7 +52,11 @@ class GetAllBooks extends Component {
         <div className="search-books-results">
         <SetShelf target={this.state.books}
         addToWantToRead={this.props.addToWantToRead}
-        wantToReadList={this.props.wantToReadList}/>
+        wantToReadList={this.props.wantToReadList}
+        addToCurrentlyReading={this.props.addToCurrentlyReading}
+        currentlyReadingList={this.props.currentlyReadingList}
+        addToRead={this.props.addToRead}
+        ReadList={this.props.ReadList}/>
         </div>
     
       </div>
