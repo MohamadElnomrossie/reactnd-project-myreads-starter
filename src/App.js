@@ -7,33 +7,31 @@ import SetShelf from "./SetShelf"
 import {Link} from "react-router-dom"
 import {Route} from "react-router-dom"
 class BooksApp extends React.Component {
-  
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
+  state = (localStorage.getItem('state'))? JSON.parse(localStorage.getItem('state')):{
     showSearchPage: false,
     currentlyReading:[],
     wantToRead:[],
     read:[]
 
   }
+
+saveState=()=>{
+  localStorage.setItem('state', JSON.stringify(this.state))
+}
+
 addToWantToRead=(book)=>{
 if(this.state.wantToRead.includes(book[0])===false){
   const wantToRead=this.state.wantToRead.concat(book[0])
-  
   this.setState((currentState)=>({
     wantToRead,
       currentlyReading:currentState.currentlyReading.filter((e)=>{
 return e.id!==book[0].id}),
 read:currentState.read.filter((e)=>{
-  return e.id!==book[0].id})
+  return e.id!==book[0].id})}))
+this.saveState()
+}
 
-
-}))}}
+}
 
 remove=(book)=>{
      this.setState((currentState)=>({
@@ -44,6 +42,7 @@ remove=(book)=>{
                     read:currentState.read.filter((e)=>{
                       return e.id!==book[0].id})
   }))
+  this.saveState()
 }
 
 addToCurrentlyReading=(book)=>{
@@ -57,6 +56,7 @@ addToCurrentlyReading=(book)=>{
                     read:currentState.read.filter((e)=>{
                       return e.id!==book[0].id})
   }))
+  this.saveState()
 }
 }
 
@@ -71,6 +71,7 @@ addToRead=(book)=>{
                     currentlyReading:currentState.currentlyReading.filter((e)=>{
                     return e.id!==book[0].id})
   }))
+  this.saveState()
 }
 }
  async componentDidMount(){
@@ -89,9 +90,14 @@ addToRead=(book)=>{
     remove={this.remove}
    />
   }
-  addToMyReads
-  render() {
 
+
+  
+  render() {
+    const s=JSON.parse(localStorage.getItem('state'))
+    this.saveState({read:s.read,
+    currentlyReading:s.currentlyReading,
+    wantToRead:s.wantToRead})
     return (
       <div className="app">
         <Route path="/newRead" render={()=>(
@@ -134,7 +140,7 @@ addToRead=(book)=>{
               </div>
             </div>
             <div className="open-search">
-             <Link to="/newRead">Add a book</Link>
+             <Link to="/newRead"><button>sds</button></Link>
               {/* <Link to="/newRead">Add a book</Link> */}
             </div>
           </div>
