@@ -34,6 +34,20 @@ import React,{Component} from "react";
       this.props.remove(book)
     }
   }
+  handleChange=(event)=>{
+    if (event.target.value==='wantToRead'){
+      this.addToWantToRead(event)
+    }
+    else if(event.target.value==='currentlyReading'){
+      this.addToCurrentlyReading(event)
+    }
+    else if(event.target.value==='read'){
+      this.addToRead(event)
+    }
+    else{
+      this.remove(event)
+    }
+  }
    render(){
    return(
     <ol className="books-grid">
@@ -51,27 +65,38 @@ import React,{Component} from "react";
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select>
+                  <select id={book.id} value={book.shelf} onChange={(event)=>{this.handleChange(event)}}>
                     <option value="move" disabled>
                       Move to...
                     </option>
-                    <option value="currentlyReading" id={book.id} disabled={(this.props.target.includes(
+                    <option value="currentlyReading" id={book.id}
+                    disabled={(this.props.target.includes(
                       this.props.target.filter((e)=>{
                         return e.id===book.id && e.shelf==='currentlyReading'
                       })[0]
-                    ))?1:0} onClick={(event)=>this.addToCurrentlyReading(event)}>Currently Reading</option>
-
-                    <option value="wantToRead" id={book.id} disabled={(this.props.target.includes(
+                    ))?1:0}
+                     >Currently Reading</option>
+                    <option value="wantToRead" id={book.id}
+                     disabled={(this.props.target.includes(
                       this.props.target.filter((e)=>{
                         return e.id===book.id && e.shelf==='wantToRead'
                       })[0]
-                    ))?1:0} onClick={(event)=>this.addToWantToRead(event)}>Want to Read</option>
-                    <option value="read" disabled={(this.props.target.includes(
+                    ))?1:0}
+                    >Want to Read</option>
+                    <option value="read" id={book.id} 
+                     disabled={(this.props.target.includes(
                       this.props.target.filter((e)=>{
                         return e.id===book.id && e.shelf==='read'
                       })[0]
-                    ))?1:0} id={book.id} onClick={(event)=>this.addToRead(event)}>Read</option>
-                    <option value="none"  id={book.id}onClick={(event)=>this.remove(event)}>None</option>
+                    ))?1:0}
+                    >Read</option>
+                    <option value="none"
+                     disabled={(!this.props.target.includes(
+                      this.props.target.filter((e)=>{
+                        return e.id===book.id
+                      })[0]
+                    ))?1:0}
+                    id={book.id}>None</option>
                   </select>
                 </div>
               </div>

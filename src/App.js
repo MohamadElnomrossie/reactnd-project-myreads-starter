@@ -86,7 +86,7 @@ addToCurrentlyReading=(book)=>{
     
     return (
       <div className="app">
-        <Route path="/newRead" render={()=>(
+        <Route path="/search" render={()=>(
           <GetAllBooks 
           books={this.state.books}
           addToWantToRead={this.addToWantToRead}
@@ -138,7 +138,7 @@ addToCurrentlyReading=(book)=>{
               </div>
             </div>
             <div className="open-search">
-             <Link to="/newRead"><button>sds</button></Link>
+             <Link to="/search"><button>sds</button></Link>
               {/* <Link to="/newRead">Add a book</Link> */}
             </div>
           </div>
