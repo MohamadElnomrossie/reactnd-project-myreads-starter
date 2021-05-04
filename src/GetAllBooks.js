@@ -10,19 +10,27 @@ class GetAllBooks extends Component {
     }
     handleSearch=(event)=>{
         event.preventDefault()
+        if (event.target.value.trim()!==""){
         this.setState({query:event.target.value});
-        this.bookSearch()
+        this.bookSearch()}
+        else{
+          this.setState({books:[]})
+        }
     }
 
     bookSearch=async()=>{
-        if (this.state.query===""){
-            this.setState({books:this.props.books})}
-        else{
+       
             const books=await search(this.state.query)
-            if(books.length>0){
-                this.setState({books})
+            try{
+
+              if(books.length>0){
+                  this.setState({books})
+              }
             }
-        }
+            catch{
+              
+            }
+        
     }
 
     render() { 
