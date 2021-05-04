@@ -60,6 +60,7 @@ addToCurrentlyReading=(book)=>{
  async componentDidMount(){
   const books= await BooksAPI.getAll()
   this.setState({books})
+  
   }
   shelf=(target)=>{
     return <SetShelf

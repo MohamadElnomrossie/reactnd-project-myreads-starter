@@ -39,7 +39,7 @@ import React,{Component} from "react";
       this.addToWantToRead(event)
     }
     else if(event.target.value==='currentlyReading'){
-      console.log("object");
+
       this.addToCurrentlyReading(event)
     }
     else if(event.target.value==='read'){
@@ -66,27 +66,31 @@ import React,{Component} from "react";
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select id={book.id} value={book.shelf} selected={book.shelf} >
+                  <select id={book.id} value={book.shelf} selected={book.shelf} onChange={(event)=>{this.handleChange(event)}} >
                     <option value="move" disabled>
                       Move to...
                     </option>
-                    <option value="currentlyReading" id={book.id} onClick={(event)=>this.addToCurrentlyReading(event)}>Currently Reading</option>
+                    <option value="currentlyReading" id={book.id} 
+                    // onClick={(event)=>this.addToCurrentlyReading(event)}
+                    >Currently Reading</option>
                     <option value="wantToRead" id={book.id}
-                     onClick={(event)=>this.addToWantToRead(event)}
+                    //  onClick={(event)=>this.addToWantToRead(event)}
                     >Want to Read</option>
                     <option value="read" id={book.id} 
-                     onClick={(event)=>this.addToRead(event)}
+                    //  onClick={(event)=>this.addToRead(event)}
                     >Read</option>
                     <option value="none"
                      
                     id={book.id}
-                    onClick={(event)=>this.remove(event)}
+                    // onClick={(event)=>this.remove(event)}
                     >None</option>
                   </select>
                 </div>
               </div>
               <div className="book-title">{book.title}</div>
-              <div className="book-authors">{(book.authors)?book.authors[0]:""}</div>
+              { (book.authors) && book.authors.map((author)=>{
+                return (<div key={author} className="book-authors">{author}</div>)
+              })} 
             </div>
           </li>
         );

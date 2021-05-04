@@ -10,5 +10,6 @@ This is a project for tracking personal reading list
 
 <img src="https://video.udacity-data.com/topher/2017/July/595d48a9_correct-use-of-state/correct-use-of-state.gif">
 
-
+* install all project dependencies with `npm install`
+* start the development server with `npm start`
 
