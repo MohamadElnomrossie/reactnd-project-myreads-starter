@@ -7,72 +7,55 @@ import SetShelf from "./SetShelf"
 import {Link} from "react-router-dom"
 import {Route} from "react-router-dom"
 class BooksApp extends React.Component {
-  state = (localStorage.getItem('state'))? JSON.parse(localStorage.getItem('state')):{
-    showSearchPage: false,
-    currentlyReading:[],
-    wantToRead:[],
-    read:[]
 
-  }
-
-saveState=()=>{
-  localStorage.setItem('state', JSON.stringify(this.state))
-}
+state={books:[]}
 
 addToWantToRead=(book)=>{
-if(this.state.wantToRead.includes(book[0])===false){
-  const wantToRead=this.state.wantToRead.concat(book[0])
-  this.setState((currentState)=>({
-    wantToRead,
-      currentlyReading:currentState.currentlyReading.filter((e)=>{
-return e.id!==book[0].id}),
-read:currentState.read.filter((e)=>{
-  return e.id!==book[0].id})}))
-this.saveState()
-}
-
+BooksAPI.update(book[0],'wantToRead').then(()=>{})
+book[0]['shelf']='wantToRead'
+this.setState((currentState)=>({
+  books:currentState.books.filter((e)=>{
+    return e.id!==book[0].id
+  }),
+}))
+this.setState((currentState)=>({
+ books:currentState.books.concat(book[0]) 
+}))
 }
 
 remove=(book)=>{
-     this.setState((currentState)=>({
-      currentlyReading:currentState.currentlyReading.filter((e)=>{
-        return e.id!==book[0].id}),
-                              wantToRead:currentState.wantToRead.filter((e)=>{
-                    return e.id!==book[0].id}),
-                    read:currentState.read.filter((e)=>{
-                      return e.id!==book[0].id})
-  }))
-  this.saveState()
+  BooksAPI.update(book[0],'')
+  book[0]['shelf']=''
+  this.setState((currentState)=>({
+    books:currentState.books.filter((e)=>{
+      return e.id!==book[0].id
+    }) 
+   }))
 }
 
 addToCurrentlyReading=(book)=>{
-  if(this.state.currentlyReading.includes(book[0])===false){
-
-    const currentlyReading=this.state.currentlyReading.concat(book[0])
-    this.setState((currentState)=>({
-                            currentlyReading,
-                              wantToRead:currentState.wantToRead.filter((e)=>{
-                    return e.id!==book[0].id}),
-                    read:currentState.read.filter((e)=>{
-                      return e.id!==book[0].id})
+  BooksAPI.update(book[0],'currentlyReading')
+  book[0]['shelf']='currentlyReading'
+  this.setState((currentState)=>({
+    books:currentState.books.filter((e)=>{
+      return e.id!==book[0].id
+    }),
   }))
-  this.saveState()
+  this.setState((currentState)=>({
+    books:currentState.books.concat(book[0]) 
+   }))
 }
-}
-
-addToRead=(book)=>{
-  if(this.state.read.includes(book[0])===false){
-
-    const read=this.state.read.concat(book[0])
-    this.setState((currentState)=>({
-                            read,
-                    wantToRead:currentState.wantToRead.filter((e)=>{
-                    return e.id!==book[0].id}),
-                    currentlyReading:currentState.currentlyReading.filter((e)=>{
-                    return e.id!==book[0].id})
+  addToRead=(book)=>{
+  BooksAPI.update(book[0],'read')
+  book[0]['shelf']='read'
+  this.setState((currentState)=>({
+    books:currentState.books.filter((e)=>{
+      return e.id!==book[0].id
+    }),
   }))
-  this.saveState()
-}
+  this.setState((currentState)=>({
+    books:currentState.books.concat(book[0]) 
+   }))
 }
  async componentDidMount(){
   const books= await BooksAPI.getAll()
@@ -82,11 +65,17 @@ addToRead=(book)=>{
     return <SetShelf
     target={target}
     addToCurrentlyReading={this.addToCurrentlyReading}
-    wantToReadList={this.state.wantToRead}
+    wantToReadList={this.state.books.filter((e)=>{
+      return e.shelf==='wantToRead'
+    })}
     addToWantToRead={this.addToWantToRead}
-    currentlyReadingList={this.state.currentlyReading}
+    currentlyReadingList={this.state.books.filter((e)=>{
+      return e.shelf==='currentlyReading'
+    })}
     addToRead={this.addToRead}
-    ReadList={this.state.read}
+    ReadList={this.state.books.filter((e)=>{
+      return e.shelf==='read'
+    })}
     remove={this.remove}
    />
   }
@@ -94,24 +83,27 @@ addToRead=(book)=>{
 
   
   render() {
-    const s=JSON.parse(localStorage.getItem('state'))
-    this.saveState({read:s.read,
-    currentlyReading:s.currentlyReading,
-    wantToRead:s.wantToRead})
+    
     return (
       <div className="app">
         <Route path="/newRead" render={()=>(
           <GetAllBooks 
-          showSearchPage={() => this.setState({ showSearchPage: false })} 
           books={this.state.books}
           addToWantToRead={this.addToWantToRead}
-          wantToReadList={this.state.wantToRead}
-          currentlyReadingList={this.state.currentlyReading}
+          wantToReadList={this.state.books.filter((e)=>{
+            return e.shelf==='wantToRead'
+          })}
+          currentlyReadingList={this.state.books.filter((e)=>{
+            return e.shelf==='currentlyReading'
+          })}
           addToCurrentlyReading={this.addToCurrentlyReading}
           addToRead={this.addToRead}
-          ReadList={this.state.read}
+          ReadList={this.state.books.filter((e)=>{
+            return e.shelf==='read'})}
           remove={this.remove}
-          /> )}/>
+          /> 
+          )}
+          />
        <Route exact path="/" render={()=>(
           <div className="list-books">
             <div className="list-books-title">
@@ -122,19 +114,25 @@ addToRead=(book)=>{
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
-                    {this.shelf(this.state.currentlyReading)}
+                    {this.shelf(this.state.books.filter((e)=>{
+                      return e.shelf==='currentlyReading'
+                    }))}
                   </div>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
-                  {this.shelf(this.state.wantToRead)}
+                  {this.shelf(this.state.books.filter(e=>{
+                    return e.shelf==='wantToRead'
+                  }))}
                   </div>
                 </div>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
-                   {this.shelf(this.state.read)}
+                   {this.shelf(this.state.books.filter(e=>{
+                    return e.shelf==='read'
+                  }))}
                   </div>
                 </div>
               </div>

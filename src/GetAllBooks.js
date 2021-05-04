@@ -6,7 +6,7 @@ class GetAllBooks extends Component {
     state={books:[],
     query:""}
     componentDidMount(){
-        this.setState({books:this.props.books})
+        
     }
     handleSearch=(event)=>{
         event.preventDefault()
@@ -26,7 +26,7 @@ class GetAllBooks extends Component {
     }
 
     render() { 
-      
+      console.log(this.state.books);
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -52,13 +52,33 @@ class GetAllBooks extends Component {
         <div className="search-books-results">
         <SetShelf target={this.state.books}
         addToWantToRead={this.props.addToWantToRead}
-        wantToReadList={this.props.wantToReadList}
+        wantToReadList={this.state.books.filter((e)=>{
+          return e.shelf==='wantToRead'
+        })}
         addToCurrentlyReading={this.props.addToCurrentlyReading}
-        currentlyReadingList={this.props.currentlyReadingList}
+        // currentlyReadingList={this.state.books.filter((e)=>{
+        //   return e.shelf==='currentlyReading'
+        // })}
         addToRead={this.props.addToRead}
-        ReadList={this.props.ReadList}/>
+        ReadList={this.state.books.filter((e)=>{
+          return e.shelf==='read'
+        })}/>
         </div>
-    
+        {/* addToCurrentlyReading={this.addToCurrentlyReading}
+    wantToReadList={this.state.books.filter((e)=>{
+      return e.shelf==='wantToRead'
+    })}
+    addToWantToRead={this.addToWantToRead}
+    currentlyReadingList={this.state.books.filter((e)=>{
+      return e.shelf==='currentlyReading'
+    })}
+    addToRead={this.addToRead}
+    ReadList={this.state.books.filter((e)=>{
+      return e.shelf==='read'
+    })}
+    remove={this.remove} */}
+
+
       </div>
     );
   }
