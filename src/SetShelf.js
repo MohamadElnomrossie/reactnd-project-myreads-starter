@@ -50,6 +50,7 @@ import React,{Component} from "react";
     }
   }
    render(){
+     try{
    return(
     <ol className="books-grid">
       {this.props.target.map((book) => {
@@ -97,5 +98,12 @@ import React,{Component} from "react";
       })}
     </ol>
 )
-}}
+}
+catch{
+  return(
+    <h1>No results</h1>
+  )
+}
+}
+}
 export default SetShelf

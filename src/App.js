@@ -24,7 +24,7 @@ this.setState((currentState)=>({
 }
 
 remove=(book)=>{
-  BooksAPI.update(book[0],'')
+  BooksAPI.update(book[0],'none')
   book[0]['shelf']=''
   this.setState((currentState)=>({
     books:currentState.books.filter((e)=>{
@@ -90,6 +90,7 @@ addToCurrentlyReading=(book)=>{
         <Route path="/search" render={()=>(
           <GetAllBooks 
           books={this.state.books}
+     
           addToWantToRead={this.addToWantToRead}
           wantToReadList={this.state.books.filter((e)=>{
             return e.shelf==='wantToRead'
